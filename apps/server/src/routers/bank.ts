@@ -1,7 +1,7 @@
 import { z } from "zod"
 import { publicProcedure, router } from "../trpc"
 import { isLoggedIn } from "../middleware/user"
-// import { hashPassword } from "../utils/passwordManager"
+import { hashPassword } from "../utils/passwordManager"
 import jwt from "jsonwebtoken"
 import { SECRET } from ".."
 import { isBankAuthenticated } from "../middleware/bank"
@@ -26,7 +26,7 @@ export const bankRouter= router({
                   }
             })
             if(!existingBank){
-                const hashedPassword ="sasww"// await hashPassword(opts.input.password);
+                const hashedPassword = await hashPassword(opts.input.password);
                 const newUserBank = await opts.ctx.db.userBank.create({
                     data:{
                         userId:Number(opts.ctx.userId),

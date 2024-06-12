@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { publicProcedure, router } from "../trpc"
-// import { hashPassword } from "../utils/passwordManager";
+import { hashPassword } from "../utils/passwordManager";
 import { SECRET } from "..";
 import jwt from "jsonwebtoken";
 import { TRPCError } from "@trpc/server";
@@ -17,7 +17,7 @@ export const userRouter= router({
     }))
     .mutation(async (opts)=>{
         let username = opts.input.username;
-        let password = "Sss"//await hashPassword(opts.input.password);
+        let password = await hashPassword(opts.input.password);
         const existingUser = await opts.ctx.db.user.findFirst({
             where:{username}
         });
@@ -58,6 +58,8 @@ export const userRouter= router({
         if (!response) {
             throw new TRPCError({ code: 'UNAUTHORIZED' });
         }
+//Todo:"Add verify hasing apssword"
+
         const token: string = jwt.sign({ userId: opts.ctx.userId }, SECRET, { expiresIn: '1h' });
 
         return {
