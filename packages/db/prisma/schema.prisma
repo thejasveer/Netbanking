@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId     Int        @id @default(autoincrement())
+  username   String
+  password   String
+  loginToken String?
+  banks      UserBank[]
+}
+
+model Banks {
+  bankId Int    @id @default(autoincrement())
+  name   String @unique
+
+  usernamePlaceholder String
+  imgUrl              String
+  users               UserBank[]
+}
+
+model UserBank {
+  userId      Int
+  bankId      Int
+  user        User          @relation(fields: [userId], references: [userId])
+  bank        Banks         @relation(fields: [bankId], references: [bankId])
+  password    String
+  username    String
+  balance     Int           @default(2000)
+  Transaction Transaction[]
+
+  @@id([userId, bankId]) // Composite primary key
+}
+
+model Transaction {
+  txId      Int             @id @default(autoincrement())
+  token     String          @unique
+  status    PaymentStatus
+  amount    Int
+  userId    Int
+  bankId    Int
+  userBank  UserBank        @relation(fields: [userId, bankId], references: [userId, bankId])
+  type      TransactionType
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([userId, bankId])
+}
+
+enum TransactionType {
+  OnRamp
+  OffRamp
+}
+
+enum PaymentStatus {
+  INITIATED
+  PROCESSING
+  SUCCESS
+  FAILED
+}
