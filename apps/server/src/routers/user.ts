@@ -30,8 +30,10 @@ export const userRouter= router({
             username,
             password,
           }});
-          let userId = response[0]._id;
+          console.log(response)
+          let userId = response.userId;
         const token: string = jwt.sign({ userId:userId }, SECRET);
+
         await opts.ctx.db.user.update({
             where:{
                 userId:userId
@@ -39,7 +41,7 @@ export const userRouter= router({
            loginToken:token
           }});
           return {
-            token
+            loginToken:token
           }
      
 
