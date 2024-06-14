@@ -9,6 +9,9 @@ import { isBankAuthenticated } from "../middleware/bank"
 
 
 export const bankRouter= router({
+    getBanks: publicProcedure
+    .use(isLoggedIn)
+    
     login: publicProcedure
     .use(isLoggedIn)
     .input(

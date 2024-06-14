@@ -1,7 +1,7 @@
 // trpcClient.ts
 
 import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
-import db from '@repo/db/client';
+ 
 import type { AppRouter } from '../../server/src';
 
 export const trpc = createTRPCProxyClient<AppRouter>({
