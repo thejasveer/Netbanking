@@ -10,22 +10,22 @@ import { isBankAuthenticated } from "../middleware/bank"
 
 export const bankRouter= router({
     getBanks: publicProcedure
-    .use(isLoggedIn)
+ 
     .output(z.array(z.object({
-        id:z.string(),
+        id:z.number(),
         bankName:z.string(),
         placeholder:z.string(),
         logo:z.string()
-
-    })))
+ 
+    }))) 
     .query(async (opts)=>{
         let banks = await opts.ctx.db.banks.findMany();
-
+        console.log(banks)
         return banks.map((x)=>({
             id:x.bankId,
             bankName: x.name,
             placeholder: x.usernamePlaceholder,
-            log:x.imgUrl
+            logo:x.imgUrl
              }))
             }),
     

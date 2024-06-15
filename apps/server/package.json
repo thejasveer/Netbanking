@@ -7,7 +7,6 @@
     "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "start": "node dist/index.js",
     "buildDev": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --watch",
-    
     "dev": "npm run buildDev && npm run start"
   },
   "keywords": [],
@@ -15,10 +14,9 @@
   "license": "ISC",
   "dependencies": {
     "@repo/db": "*",
-    "@trpc/client": "^10.38.1",
-    "@trpc/server": "^10.38.1",
+    "@trpc/client": "^11.0.0-rc.403",
+    "@trpc/server": "^11.0.0-rc.403",
     "@types/cors": "^2.8.14",
-    
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "esbuild": "^0.20.2",
@@ -29,5 +27,5 @@
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6"
-  }
+  } 
 }

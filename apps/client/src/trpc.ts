@@ -1,10 +1,10 @@
 // trpcClient.ts
 
-import { createTRPCProxyClient, httpBatchLink } from '@trpc/client';
+import { createTRPCClient, httpBatchLink } from '@trpc/client';
  
 import type { AppRouter } from '../../server/src';
 
-export const trpc = createTRPCProxyClient<AppRouter>({
+export const trpc = createTRPCClient<AppRouter>({
     links: [
         httpBatchLink({
             url: 'http://localhost:3004',
@@ -18,6 +18,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
 });
 
 export async function getLoginToken(username:string,password:string) {
+    
     const response:any = await trpc.user.signup.mutate({
         username: username,
         password: password

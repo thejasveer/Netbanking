@@ -14,7 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "@repo/db": "*",
-    "@trpc/client": "^10.38.1",
+    "@trpc/client": "^11.0.0-rc.403",
+    "@trpc/server": "^11.0.0-rc.403",
     "@types/express": "^4.17.21",
     "cors": "^2.8.5",
     "esbuild": "^0.20.2",
