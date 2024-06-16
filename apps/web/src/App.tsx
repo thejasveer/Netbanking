@@ -2,12 +2,15 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
 import { Children, useState } from 'react';
 import { trpc } from './utils/trpc';
-import { BrowserRouter, Routes , Route, useParams } from "react-router-dom";
+import { BrowserRouter, Routes , Route, useSearchParams } from "react-router-dom";
 import { inferProcedureOutput } from '@trpc/server';
 import { AppRouter } from '../../server/src';
+ 
 
 export function App() {
+  const [searchParams] = useSearchParams();
  
+  const token = searchParams.get('token');
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -24,7 +27,7 @@ export function App() {
           // You can pass any HTTP headers you wish here
           async headers() {
             return {
-              // authorization: "Bearer 1",
+              authorization: "Bearer "+token,
             };
            },
         }),
@@ -42,7 +45,7 @@ export function App() {
         {/* Your app here */}
        <Appbar/>
         <Routes>
-          <Route path="/banks/:token" element={<Banks/>} /> {/* 👈 Renders at /app/ */}
+          <Route path="/banks" element={<Banks/>} /> {/* 👈 Renders at /app/ */}
         </Routes>
      
       </QueryClientProvider>
@@ -88,6 +91,12 @@ function Center({children}:{children:any}){
 }
 
 function Banks(){
+ 
+
+  const [searchParams] = useSearchParams();
+ 
+  const query = searchParams.get('paymentToken');
+  
 
 const banks  = trpc.bank.getBanks.useQuery();
 const [selectedBank, setSelectedBank]= useState<bankType[0]|null>(null)
