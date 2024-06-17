@@ -46,9 +46,7 @@ export function Banks(){
                         
                             })}
                             
-                
-                
-                    </div>    
+                     </div>    
                 </Center>  
 
     </Auth>

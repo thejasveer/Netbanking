@@ -21,7 +21,7 @@ const server  = createHTTPServer({
         let authHeader = opts.req.headers["authorization"];
         if (authHeader) {
             const token = authHeader.split(' ')[1]||'';
-            console.log(token);
+            // console.log(token);
             return new Promise<{db:typeof db, userId?: string,req:any}>((resolve) => {
                     jwt.verify(token,SECRET, (err, user:any) => {
                     if (user) {

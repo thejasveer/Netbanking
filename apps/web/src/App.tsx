@@ -26,7 +26,8 @@ export function App() {
           // You can pass any HTTP headers you wish here
           async headers() {
             return {
-              authorization: "Bearer "+localStorage.getItem('token1'),
+              authorization: "Bearer "+localStorage.getItem('token'),
+              'x-bankAuth-token': "Bearer "+localStorage.getItem('bToken'),
             };
            },
         }),

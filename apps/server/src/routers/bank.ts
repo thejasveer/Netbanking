@@ -1,10 +1,11 @@
-import { z } from "zod"
+import { optional, z } from "zod"
 import { publicProcedure, router } from "../trpc"
 import { isLoggedIn } from "../middleware/user"
-import { hashPassword } from "../utils/passwordManager"
+import { hashPassword, verifyPassword } from "../utils/passwordManager"
 import jwt from "jsonwebtoken"
 import { SECRET } from ".."
 import { isBankAuthenticated } from "../middleware/bank"
+import { TRPCError } from "@trpc/server"
  
 
 
@@ -20,7 +21,7 @@ export const bankRouter= router({
     }))) 
     .query(async (opts)=>{
         let banks = await opts.ctx.db.banks.findMany();
-        console.log(banks)
+   
         return banks.map((x)=>({
             id:x.bankId,
             bankName: x.name,
@@ -33,7 +34,7 @@ export const bankRouter= router({
     .use(isLoggedIn)
     .input(
         z.object({
-            bankId : z.string(),
+            bankId : z.number(),
             username:z.string(),
             password:z.string()
             
@@ -42,7 +43,7 @@ export const bankRouter= router({
             const existingBank = await opts.ctx.db.userBank.findFirst({
                 where:{
                     userId:Number(opts.ctx.userId),
-                    bankId:Number(opts.input.bankId),
+                    bankId:opts.input.bankId,
                   }
             })
             if(!existingBank){
@@ -50,7 +51,7 @@ export const bankRouter= router({
                 const newUserBank = await opts.ctx.db.userBank.create({
                     data:{
                         userId:Number(opts.ctx.userId),
-                        bankId:Number(opts.input.bankId),
+                        bankId:opts.input.bankId,
                         username:opts.input.username,
                         password: hashedPassword
                     }
@@ -60,13 +61,19 @@ export const bankRouter= router({
                     loginTokenForBank
                 }
             }else{
-                const loginTokenForBank =  jwt.sign(existingBank.username,SECRET);
+               const {username,password}= opts.input;
+               if(existingBank.username==username&& await verifyPassword(password,existingBank.password)){
+                const loginTokenForBank =  jwt.sign({username:existingBank.username,bankId:existingBank.bankId},SECRET);
                 return {
                     loginTokenForBank
                 }
+               }else{
+                throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invalid credentials. Please try with correct credentials' });
+               }
+              
             }
         }),
-        debit: publicProcedure
+        action: publicProcedure
         .use(isLoggedIn)
         .use(isBankAuthenticated )
        
@@ -75,20 +82,44 @@ export const bankRouter= router({
          }))
          .mutation(async(opts)=>{
             try{
-                const payload = new Promise(resolve=>{
+                const payload:any = await new Promise((resolve,reject)=>{
                     jwt.verify(
                         opts.input.token,
-                        opts.ctx.user?.loginToken || '',
-                        // (err,payload)=>{
-                        //     if(payload){
-                        //         resolve(payload)
-                        //     }
-                        // }
+                        SECRET,
+                        (err,payload)=>{
+                            if(payload){
+                                resolve(payload)
+                            }else{
+                                throw new TRPCError({ code: 'BAD_REQUEST', message: 'We can\'t fullfil your request' });
+             
+                            }
+                        }
                       );
                       
                 });
 
-                console.log(payload)
+                //verify enoygh balance
+                const userBankDetails = await opts.ctx.db.userBank.findFirst({
+                    where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername}
+                });
+                console.log(userBankDetails?.balance,payload.amount)
+                if(userBankDetails && payload && userBankDetails?.balance>payload.amount)
+                {
+                
+
+                    
+
+                }else{
+                    
+                    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });  
+                }
+                //make tranasction row with initiated
+                //inform websoket server and make transcation there tooo
+                //put into redis queue
+
+
+
+                console.log("payload",payload)
 
             }catch(err){
                     console.log(err)

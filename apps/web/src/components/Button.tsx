@@ -1,7 +1,8 @@
+import { Loader } from "./Loader";
 
-export function Button({action}: {action: any}){
+export function Button({action,loading=false}: {action: any,loading?:boolean}){
 
-    return  <button type="button" onClick={action} className="text-white bg-black  focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    return  <button type="button" disabled={loading} onClick={action} className="flex justify-center items-center gap-2 text-white bg-black  focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center  "><span>{loading &&<Loader btn={true}/>}</span><span>Submit</span></button>
     
-  
+   
   }
