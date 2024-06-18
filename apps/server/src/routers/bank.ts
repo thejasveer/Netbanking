@@ -3,10 +3,15 @@ import { publicProcedure, router } from "../trpc"
 import { isLoggedIn } from "../middleware/user"
 import { hashPassword, verifyPassword } from "../utils/passwordManager"
 import jwt from "jsonwebtoken"
-import { SECRET } from ".."
+import { SECRET,WEBHOOK_URL } from ".."
 import { isBankAuthenticated } from "../middleware/bank"
 import { TRPCError } from "@trpc/server"
+import axios from "axios"
  
+import {PaymentStatus} from '@prisma/client'
+import { createClient } from "redis"
+import redisClient from "../redis"
+ import { TransactionType} from '@prisma/client'
 
 
 export const bankRouter= router({
@@ -76,13 +81,16 @@ export const bankRouter= router({
         action: publicProcedure
         .use(isLoggedIn)
         .use(isBankAuthenticated )
-       
+        .output( z.object({
+            success: z.boolean(),
+          }) )
         .input(z.object({
             token:z.string(),
          }))
          .mutation(async(opts)=>{
+            let payload:any;
             try{
-                const payload:any = await new Promise((resolve,reject)=>{
+            payload  = await new Promise((resolve,reject)=>{
                     jwt.verify(
                         opts.input.token,
                         SECRET,
@@ -90,7 +98,8 @@ export const bankRouter= router({
                             if(payload){
                                 resolve(payload)
                             }else{
-                                throw new TRPCError({ code: 'BAD_REQUEST', message: 'We can\'t fullfil your request' });
+                                console.log(payload)
+                                throw new TRPCError({ code: 'BAD_REQUEST', message: 'We can\'t fullfil your request. Please close this window and try agin' });
              
                             }
                         }
@@ -98,31 +107,67 @@ export const bankRouter= router({
                       
                 });
 
-                //verify enoygh balance
+          //verify enoygh balance
                 const userBankDetails = await opts.ctx.db.userBank.findFirst({
                     where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername}
                 });
                 console.log(userBankDetails?.balance,payload.amount)
-                if(userBankDetails && payload && userBankDetails?.balance>payload.amount)
+                if(userBankDetails && payload && userBankDetails?.balance>payload.amount/100)
                 {
-                
+                    console.log("payload",payload);
+                const type =  payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp;
+                console.log("type",type)
+                   //inserting tranasction row with initiated
+                const txn = await opts.ctx.db.transaction.upsert({where:{
+                    token:  opts.input.token
+                },update:{
+                        token:opts.input.token, 
+                        amount:payload.amount,
+                        status:PaymentStatus.INITIATED,
+                        userId:Number(opts.ctx.userId),
+                        bankId:Number(opts.ctx.userBankDetails.bankId),
+                        type: payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp 
+                 },
+                 create:{
+                    token:opts.input.token, 
+                    amount:payload.amount,
+                    status:PaymentStatus.INITIATED,
+                    userId:Number(opts.ctx.userId),
+                    bankId:Number(opts.ctx.userBankDetails.bankId),
+                    type: payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp 
+                 }
+                });
+                    //informing webhook server an d updating the transaction  
+                    console.log(WEBHOOK_URL)
+                 const webhookRes = await axios.post(WEBHOOK_URL , {
+                    token: opts.input.token,
+                    status: 'Initiated',
+                  });
+                  if(webhookRes.status <= 300){
+                   //put into redis queue 
+                    redisClient.lPush(
+                    `${type}__TRANSACTIONS_QUEUE`,
+                        JSON.stringify({
+                            token:payload.token
+                        })
+                    )
 
-                    
+                  }else{
+                     throw new TRPCError({ code: 'PRECONDITION_FAILED', message: 'Access to the target resource has been denied. Contact Wallet Help desk' });
+                  }
 
                 }else{
-                    
-                    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });  
+                   
+                    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });
                 }
-                //make tranasction row with initiated
-                //inform websoket server and make transcation there tooo
-                //put into redis queue
-
-
-
-                console.log("payload",payload)
-
-            }catch(err){
-                    console.log(err)
-            }
+             
+               return {
+                success:true
+               }
+    
+            }catch(err:any){
+                console.log(err)
+                throw new TRPCError(err);
+             }
           })
 }) 

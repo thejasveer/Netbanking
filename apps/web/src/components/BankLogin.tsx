@@ -12,12 +12,22 @@ export function BankLogin({bank,onClick}:{bank:bankType[0]|null;onClick:any}){
                                   password:""
                                 });
   const [paymentToken,setPaymentToken] = useState<string|null>(null)
- const bankAction  = trpc.bank.action.useMutation();
+ const bankAction  = trpc.bank.action.useMutation(
+  {
+    onSuccess:(data)=>{
+      console.log(data)
+
+    },
+ 
+    
+  }
+ );
   const bankLogin = trpc.bank.login.useMutation({
     onSuccess:({loginTokenForBank})=>{
         localStorage.setItem('bToken',loginTokenForBank)
         if(paymentToken){
-          bankAction.mutate({token:paymentToken})
+            bankAction.mutate({token:paymentToken})
+         
         }
     
 
@@ -25,6 +35,10 @@ export function BankLogin({bank,onClick}:{bank:bankType[0]|null;onClick:any}){
  
     
   });
+
+  if(bankAction.isError){
+    console.log("yes")
+  }
 
  
   const [searchParams] = useSearchParams();

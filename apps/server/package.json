@@ -17,15 +17,19 @@
     "@trpc/client": "^11.0.0-rc.403",
     "@trpc/server": "^11.0.0-rc.403",
     "@types/cors": "^2.8.14",
+    "@types/redis": "^4.0.11",
+    "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "esbuild": "^0.20.2",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
     "npm": "^10.8.1",
+    "redis": "^4.6.14",
     "zod": "^3.22.2"
   },
   "devDependencies": {
     "@types/jsonwebtoken": "^9.0.6"
-  } 
+  }
 }

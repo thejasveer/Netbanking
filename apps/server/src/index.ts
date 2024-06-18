@@ -4,13 +4,16 @@ import { userRouter } from './routers/user';
 import { router } from './trpc';
 import { createHTTPServer } from '@trpc/server/adapters/standalone';
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import db from "@repo/db/client"
 const appRouter = router({
   user:userRouter,
   bank:bankRouter
 });
-
+dotenv.config({ path: __dirname + "/../.env" })
 export const SECRET =  process.env.JWT_SECRET||'secret'
+export const WEBHOOK_URL =  process.env.WEBHOOK_URL||''
+ 
  
 export type AppRouter = typeof appRouter;
 

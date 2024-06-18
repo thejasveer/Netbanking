@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { httpBatchLink } from '@trpc/client';
-import { Children, useState } from 'react';
+import { useState } from 'react';
 import { trpc } from './utils/trpc';
 import { BrowserRouter, Routes , Route } from "react-router-dom";
  
@@ -49,7 +49,6 @@ export function App() {
           <Route path="/banks" element={<Banks/>} /> {/* 👈 Renders at /app/ */}
         </Routes>
         </BrowserRouter>
-     
       </QueryClientProvider>
     </trpc.Provider>
  
