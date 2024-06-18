@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { bankType } from "../utils/types";
 import { BankLogo } from "./BankLogo";
 import { Button } from "./Button";
@@ -12,11 +12,12 @@ export function BankLogin({bank,onClick}:{bank:bankType[0]|null;onClick:any}){
                                   password:""
                                 });
   const [paymentToken,setPaymentToken] = useState<string|null>(null)
+  const navigate = useNavigate()
  const bankAction  = trpc.bank.action.useMutation(
   {
     onSuccess:(data)=>{
       console.log(data)
-
+      window.close();
     },
  
     
@@ -26,7 +27,8 @@ export function BankLogin({bank,onClick}:{bank:bankType[0]|null;onClick:any}){
     onSuccess:({loginTokenForBank})=>{
         localStorage.setItem('bToken',loginTokenForBank)
         if(paymentToken){
-            bankAction.mutate({token:paymentToken})
+          navigate('/confirm?paymentToken='+paymentToken)
+            // bankAction.mutate({token:paymentToken})
          
         }
     

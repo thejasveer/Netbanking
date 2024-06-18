@@ -6,6 +6,7 @@ import { BrowserRouter, Routes , Route } from "react-router-dom";
  
 import { Banks } from './Banks';
 import { Appbar } from './components/Appbar';
+import { ConfirmPayment } from './ConfirmPayment';
  
 
 export function App() {
@@ -47,6 +48,7 @@ export function App() {
        <Appbar/>
         <Routes>
           <Route path="/banks" element={<Banks/>} /> {/* 👈 Renders at /app/ */}
+          <Route path="/confirm" element={<ConfirmPayment/>} /> {/* 👈 Renders at /app/ */}
         </Routes>
         </BrowserRouter>
       </QueryClientProvider>
