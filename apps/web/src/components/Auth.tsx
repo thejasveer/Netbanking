@@ -11,6 +11,7 @@ export const Auth= ({children}:{children:any})=>{
    }
 
    if(userQuery.isError){
+    debugger
     return <Center>"Not authorised to view this page."</Center>
    }
     return  children 

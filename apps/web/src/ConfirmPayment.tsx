@@ -1,25 +1,34 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { trpc } from "./utils/trpc";
 import { Button } from "./components/Button";
 import { Error } from "./components/Error";
 import { Row } from "./components/Row";
 import { Center } from "./components/Center";
+import { Back } from "./components/Back";
+import { Loader } from "./components/Loader";
 
 export const ConfirmPayment=()=>{
 
- 
+ const navigate = useNavigate();
   const [searchParams] = useSearchParams();
     const [paymentToken,setPaymentToken] = useState<string|null>(null);
+    const [fetch,setfetch]= useState(false)
+    const payload =  trpc.bank.getPayloadDetails.useQuery({paymentToken:paymentToken||''})
+  
+   
     //get user bank details 
-
+     
     useEffect(()=>{
-        console.log("yes")
-          const token = searchParams.get('paymentToken');
+    const token = searchParams.get('paymentToken');
               if(token){
                 setPaymentToken(token)
-              }
-       },[])
+               setfetch(true)
+              };
+   },[])
+
+     
+
        const bankAction  = trpc.bank.action.useMutation(
         {
           onSuccess:(data)=>{
@@ -35,12 +44,24 @@ export const ConfirmPayment=()=>{
         bankAction.mutate({token:paymentToken}) 
         } 
       }
-return <div className="p-14 flex flex-col gap-4">
-     
+      const handleback=()=>{
+       
+        navigate('/banks?paymentToken='+paymentToken)
+      }
 
+      if(payload.isLoading && payload.data ){
+        return <Loader/>
+      }
+      if(payload.isError){
+        return <Center > <Error msg="Something went wrong. Please close this window and try again later"></Error></Center>
+      }
       
-        <Row keyStr={"FROM"} value={{heading:"Checking Acc (3233)",value:"$2000"}}/>
-        <Row keyStr={"Amount"} value={{heading:"$200",value:""}}/>
+
+    return <div className="p-14 flex flex-col gap-4">
+
+    <Back fn={()=>handleback()}/>
+        <Row keyStr={payload.data?.toFrom} value={{heading:`Checking Acc (${payload.data?.bankName})`,value:"$"+ Math.floor(payload.data?.balance||0).toFixed(2)}}/>
+        <Row keyStr={"Amount"} value={{heading:'$'+Math.floor(payload.data?.amount||0).toFixed(2),value:""}}/>
         <Row keyStr={"DATE"} value={{heading:new Date().toDateString(),value:""}}/>
         <div className="mt-24">
 

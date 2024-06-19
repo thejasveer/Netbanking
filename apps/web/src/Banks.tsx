@@ -14,6 +14,7 @@ export function Banks(){
     const [searchParams] = useSearchParams();
     useEffect(()=>{
         const token = searchParams.get('token');
+        console.log('token',token)
             if(token){
                 localStorage.setItem("token", token);
             }

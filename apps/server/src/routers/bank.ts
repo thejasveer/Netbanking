@@ -169,5 +169,60 @@ export const bankRouter= router({
                 console.log(err)
                 throw new TRPCError(err);
              }
-          })
+          }),
+          getPayloadDetails: publicProcedure
+          .use(isLoggedIn)
+          .use(isBankAuthenticated)
+          .input(z.object({
+            paymentToken:z.string() 
+          }))
+          .output( z.object({
+              
+              bankName:z.string().optional(),
+              amount:z.number().optional(),
+              balance:z.number().optional(),
+              logo:z.string().optional(),
+              toFrom:z.string().optional(),
+          }))
+          .query(async (opts)=>{
+           if(!opts.input.paymentToken) return {}
+            const userBankDetails = await opts.ctx.db.userBank.findFirst({
+                where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername},
+                select:{
+                    balance:true,
+                    bank:{
+                        select:{
+                            name:true,
+                            imgUrl:true
+                        }
+                    },
+              }
+            });
+            if(!userBankDetails) return {}
+           const payload:any  = await new Promise((resolve,reject)=>{
+                jwt.verify(
+                    opts.input.paymentToken,
+                    SECRET,
+                    (err,payload)=>{
+                        if(payload){
+                            resolve(payload)
+                        }else{
+                            console.log(payload)
+                            throw new TRPCError({ code: 'BAD_REQUEST', message: 'We can\'t fullfil your request. Please close this window and try agin' });
+         
+                        }
+                    }
+                  );
+                  
+            });
+
+              return  {
+                bankName:userBankDetails.bank.name,
+                logo:userBankDetails.bank.imgUrl,
+                balance:userBankDetails.balance/100,
+                amount:payload.amount/100,
+                toFrom: payload.type=='ON_RAMP'?'FROM':'TO'
+              }
+            })
+
 }) 
