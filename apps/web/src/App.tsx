@@ -7,6 +7,9 @@ import { BrowserRouter, Routes , Route } from "react-router-dom";
 import { Banks } from './Banks';
 import { Appbar } from './components/Appbar';
 import { ConfirmPayment } from './ConfirmPayment';
+import { Success } from './Success';
+import { Error } from './components/Error';
+import { Center } from './components/Center';
  
 
 export function App() {
@@ -52,6 +55,8 @@ export function App() {
         <Routes>
           <Route path="/banks" element={<Banks/>} /> {/* 👈 Renders at /app/ */}
           <Route path="/confirm" element={<ConfirmPayment/>} /> {/* 👈 Renders at /app/ */}
+          <Route path="/success" element={<Success/>} /> {/* 👈 Renders at /app/ */}
+          <Route path="*" element={<Center><Error msg={"Not authorized to view this page."}/></Center>} />
         </Routes>
         </BrowserRouter>
       </QueryClientProvider>

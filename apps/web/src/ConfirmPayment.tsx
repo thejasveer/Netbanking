@@ -28,11 +28,12 @@ export const ConfirmPayment=()=>{
    },[])
 
      
-
+   
        const bankAction  = trpc.bank.action.useMutation(
         {
           onSuccess:(data)=>{
             console.log(data)
+            navigate('/success')
             // window.close();
           },
        
