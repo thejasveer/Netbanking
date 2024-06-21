@@ -111,8 +111,8 @@ export const bankRouter= router({
                 const userBankDetails = await opts.ctx.db.userBank.findFirst({
                     where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername}
                 });
-                console.log(userBankDetails?.balance,payload.amount)
-                if(userBankDetails && payload && userBankDetails?.balance>payload.amount/100)
+          
+                if(userBankDetails && payload && userBankDetails?.balance>payload.amount)
                 {
                     console.log("payload",payload);
                 const type =  payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp;
@@ -138,7 +138,7 @@ export const bankRouter= router({
                  }
                 });
                     //informing webhook server an d updating the transaction  
-                    console.log(WEBHOOK_URL)
+                 
                  const webhookRes = await axios.post(WEBHOOK_URL , {
                     token: opts.input.token,
                     status: 'Initiated',
@@ -147,7 +147,7 @@ export const bankRouter= router({
                    //put into redis queue 
                    console.log(opts.input.token)
                     redisClient.lPush(
-                    `${type}__TRANSACTIONS_QUEUE`,
+                    `TRANSACTIONS_QUEUE`,
                          JSON.stringify( opts.input.token  )
                     )
 

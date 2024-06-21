@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "UserBank" ALTER COLUMN "balance" SET DEFAULT 200000;

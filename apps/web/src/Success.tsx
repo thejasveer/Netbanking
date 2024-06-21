@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import { Auth } from "./components/Auth";
 import { Button } from "./components/Button"
 import { Center } from "./components/Center";
+import { Loader } from "./components/Loader";
 
 export const Success=()=>{
-
+    const [socket, setSocket] = useState<WebSocket | null>(null);
+    const [messages, setMessages] = useState<any>([]);
+    const [userId, setUserId] = useState(16); // Example user ID
 
     function redirectBack(){
         debugger
@@ -12,8 +16,21 @@ export const Success=()=>{
             window.close();
         }
     }
-
+  
+    useEffect(() => {
+        const newSocket = new WebSocket('ws://localhost:3006');
+        newSocket.onopen = () => {
+          console.log('Connection established');
+          socket.send(JSON.stringify({ userId }));
+        }
+        newSocket.onmessage = (message) => {
+          console.log('Message received:', message.data);
+        }
+        setSocket(newSocket);
+        return () => newSocket.close();
+      }, [userId])
     return <Auth>
+        {messages.length==0?<Loader/>:
         
                 <div className="bg-gray-100 h-screen flex justify-center items-center">
                     <div className=" p-6  md:mx-auto">
@@ -30,7 +47,7 @@ export const Success=()=>{
                     </div>
                 </div>
                 </div>
-        
+        }
 
     </Auth>
 }

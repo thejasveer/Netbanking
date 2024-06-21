@@ -37,7 +37,7 @@ model UserBank {
   bank        Banks         @relation(fields: [bankId], references: [bankId])
   password    String
   username    String
-  balance     Int           @default(2000)
+  balance     Int           @default(200000)
   Transaction Transaction[]
 
   @@id([userId, bankId]) // Composite primary key
