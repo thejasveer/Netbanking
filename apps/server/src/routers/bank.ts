@@ -83,6 +83,7 @@ export const bankRouter= router({
         .use(isBankAuthenticated )
         .output( z.object({
             success: z.boolean(),
+            userId:z.number() 
           }) )
         .input(z.object({
             token:z.string(),
@@ -160,9 +161,12 @@ export const bankRouter= router({
                     throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });
                 }
              
-               return {
-                success:true
-               }
+                return {
+                    success:true,
+                    userId:Number(opts?.ctx?.userId)
+                   }
+            
+              
     
             }catch(err:any){
                 console.log(err)

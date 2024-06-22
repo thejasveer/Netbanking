@@ -7,6 +7,7 @@ import { Row } from "./components/Row";
 import { Center } from "./components/Center";
 import { Back } from "./components/Back";
 import { Loader } from "./components/Loader";
+import { useWebSocket } from "./hooks/useWebSocket";
 
 export const ConfirmPayment=()=>{
 
@@ -15,7 +16,17 @@ export const ConfirmPayment=()=>{
     const [paymentToken,setPaymentToken] = useState<string|null>(null);
     const [fetch,setfetch]= useState(false)
     const payload =  trpc.bank.getPayloadDetails.useQuery({paymentToken:paymentToken||''})
-  
+    const [userId, setUserId] = useState<number|null>(null); // Example user ID
+    const { messages, sendMessage } = useWebSocket('ws://localhost:3006',userId);
+
+    useEffect(() => {
+      debugger
+     
+     if(messages && messages.status=='Success')
+      {
+        navigate('/success')
+      }
+    }, [messages]);
    
     //get user bank details 
      
@@ -32,8 +43,8 @@ export const ConfirmPayment=()=>{
        const bankAction  = trpc.bank.action.useMutation(
         {
           onSuccess:(data)=>{
-            console.log(data)
-            navigate('/success')
+             setUserId(Number(data.userId))
+            // navigate('/success')
             // window.close();
           },
        
