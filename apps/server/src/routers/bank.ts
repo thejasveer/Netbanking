@@ -115,10 +115,9 @@ export const bankRouter= router({
           
                 if(userBankDetails && payload && userBankDetails?.balance>payload.amount)
                 {
-                    console.log("payload",payload);
+ 
                 const type =  payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp;
-                console.log("type",type)
-                   //inserting tranasction row with initiated
+               
                 const txn = await opts.ctx.db.transaction.upsert({where:{
                     token:  opts.input.token
                 },update:{

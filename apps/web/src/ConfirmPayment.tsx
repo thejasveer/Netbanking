@@ -17,8 +17,8 @@ export const ConfirmPayment=()=>{
     const [fetch,setfetch]= useState(false)
     const payload =  trpc.bank.getPayloadDetails.useQuery({paymentToken:paymentToken||''})
     const [userId, setUserId] = useState<number|null>(null); // Example user ID
-    const { messages, sendMessage } = useWebSocket('ws://localhost:3006',userId);
-
+    const { messages, sendMessage } = useWebSocket(import.meta.env.VITE_WEBSOCKET_WORKER_URL,userId);
+    const [websocketLoading,setWebscoketLoading] = useState(false)
     useEffect(() => {
       debugger
      
@@ -43,6 +43,7 @@ export const ConfirmPayment=()=>{
        const bankAction  = trpc.bank.action.useMutation(
         {
           onSuccess:(data)=>{
+            setWebscoketLoading(true)
              setUserId(Number(data.userId))
             // navigate('/success')
             // window.close();
@@ -79,7 +80,7 @@ export const ConfirmPayment=()=>{
 
         <p className="text-center">By swiping "Confirm" you authorize this payment </p>
        
-        <Button action={confirmPayment} loading={bankAction.isPending} text={"Confirm"}/>
+        <Button action={confirmPayment} loading={bankAction.isPending||websocketLoading} text={"Confirm"}/>
         {bankAction.isError && <Error msg={ bankAction.error.message}/>} 
         </div>
                 

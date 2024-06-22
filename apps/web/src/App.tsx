@@ -25,14 +25,13 @@ export function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: 'http://localhost:3004',
+          url: import.meta.env.VITE_TRPC_SERVER_URL,
 
           // You can pass any HTTP headers you wish here
 
           async headers() {
-            console.log('heder',localStorage.getItem('token'))
+          
             return {
-
               authorization: "Bearer "+localStorage.getItem('token'),
               'x-bankAuth-token': "Bearer "+localStorage.getItem('bToken'),
             };
