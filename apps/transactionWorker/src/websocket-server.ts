@@ -1,10 +1,6 @@
 import   { WebSocketServer } from 'ws';
- 
-import {sub} from './utils/redisClient'
-import { WEBSOCKET_SERVER_PORT } from '.';
-import http from 'http';
-
-const clients: Record<string,WebSocket>= {}
+  import {sub} from './utils/redisClient'
+ const clients: Record<string,WebSocket>= {}
 
  
 

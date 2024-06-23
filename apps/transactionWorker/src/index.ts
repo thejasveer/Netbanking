@@ -17,7 +17,7 @@ const app = express()
 app.use(cors())
 const httpServer = app.listen(WEBSOCKET_SERVER_PORT, () => {
     console.log(`WebSocket server running on port ${WEBSOCKET_SERVER_PORT}`);
-  });
+});
 
  
  startWebSocketServer(httpServer);
