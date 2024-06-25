@@ -20,9 +20,7 @@ export const ConfirmPayment=()=>{
     const { messages, sendMessage } = useWebSocket(import.meta.env.VITE_WEBSOCKET_WORKER_URL,userId);
     const [websocketLoading,setWebscoketLoading] = useState(false)
     useEffect(() => {
-      debugger
-     
-     if(messages && messages.status=='Success')
+     if(messages && messages.status=='SUCCESS')
       {
         navigate('/success')
       }
@@ -48,7 +46,14 @@ export const ConfirmPayment=()=>{
             // navigate('/success')
             // window.close();
           },
-       
+          onError:(data)=>{
+      
+             if(data.message=="Insufficient funds."){
+              navigate('/failed')
+            
+             }
+           
+          },
           
         }
        );
@@ -78,7 +83,7 @@ export const ConfirmPayment=()=>{
         <Row keyStr={"DATE"} value={{heading:new Date().toDateString(),value:""}}/>
         <div className="mt-24">
 
-        <p className="text-center">By swiping "Confirm" you authorize this payment </p>
+        <p className="text-center">By clicking "Confirm" you authorize this payment </p>
        
         <Button action={confirmPayment} loading={bankAction.isPending||websocketLoading} text={"Confirm"}/>
         {bankAction.isError && <Error msg={ bankAction.error.message}/>} 

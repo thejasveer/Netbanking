@@ -10,6 +10,7 @@ import { ConfirmPayment } from './ConfirmPayment';
 import { Success } from './Success';
 import { Error } from './components/Error';
 import { Center } from './components/Center';
+import { Failed } from './Failed';
  
 
 export function App() {
@@ -55,6 +56,7 @@ export function App() {
           <Route path="/banks" element={<Banks/>} /> {/* 👈 Renders at /app/ */}
           <Route path="/confirm" element={<ConfirmPayment/>} /> {/* 👈 Renders at /app/ */}
           <Route path="/success" element={<Success/>} /> {/* 👈 Renders at /app/ */}
+          <Route path="/failed" element={<Failed />} /> {/* 👈 Renders at /app/ */}
           <Route path="*" element={<Center><Error msg={"Not authorized to view this page."}/></Center>} />
         </Routes>
         </BrowserRouter>

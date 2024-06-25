@@ -97,7 +97,7 @@ export const proccessRampTxn= async(token: any)=>{
              pub.publish('transactions-status', JSON.stringify({
                 userId:transaction?.userId,
                 token:token,
-                status: 'Success',
+                status:PaymentStatus.SUCCESS,
               }));
       
         } catch (error: any) {
@@ -108,7 +108,7 @@ export const proccessRampTxn= async(token: any)=>{
         //TODO: push this notifywebhookserver into redis
         const webhookRes = await axios.post(WEBHOOK_URL , {
             token:token,
-            status: 'Success',
+            status: PaymentStatus.SUCCESS,
           });
       
           if (webhookRes.status <= 300) {

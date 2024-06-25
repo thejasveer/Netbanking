@@ -141,7 +141,7 @@ export const bankRouter= router({
                  
                  const webhookRes = await axios.post(WEBHOOK_URL , {
                     token: opts.input.token,
-                    status: 'Initiated',
+                    status:PaymentStatus.INITIATED,
                   });
                   if(webhookRes.status <= 300){
                    //put into redis queue 
@@ -156,7 +156,15 @@ export const bankRouter= router({
                   }
 
                 }else{
-                   
+             
+
+                       const webhookRes = await axios.post(WEBHOOK_URL , {
+                        token: opts.input.token,
+                        status: PaymentStatus.FAILED,
+                      });
+                      console.log(webhookRes)
+
+
                     throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });
                 }
              
