@@ -1,19 +1,20 @@
  
+import { useEffect } from "react";
 import { Auth } from "./components/Auth";
-import { Button } from "./components/Button"
- 
-
 export const Failed=()=>{
     
  
 
-    function redirectBack(){
- 
-        if (window) {
+    useEffect(()=>{
+        let timer;
+       timer = setTimeout(()=>{
+            if (window) {
          
-            window.close();
-        }
-    }
+                window.close();
+            }
+        },3000)
+     return ()=> clearTimeout(timer)
+    },[])
   
  
     return <Auth>
@@ -30,7 +31,7 @@ export const Failed=()=>{
                         <h3 className="md:text-2xl text-base text-gray-900 font-semibold text-center">Payment Failed!</h3>
                         <p className="text-gray-600 my-2">Oops you don't have enough funds to proceed.</p>
                       
-                        <Button action={redirectBack} text="Close"/>
+                      
                     </div>
                 </div>
                 </div>
