@@ -51,6 +51,7 @@ export const bankRouter= router({
                     bankId:opts.input.bankId,
                   }
             })
+            console.log(opts.ctx.userId)
             if(!existingBank){
                 const hashedPassword = await hashPassword(opts.input.password);
                 const newUserBank = await opts.ctx.db.userBank.create({
@@ -107,10 +108,12 @@ export const bankRouter= router({
                       );
                       
                 });
-
+                console.log(opts.ctx.userId)
           //verify enoygh balance
                 const userBankDetails = await opts.ctx.db.userBank.findFirst({
-                    where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername}
+                    where:{bankId:Number(opts.ctx.userBankDetails.bankId),
+                        userId:Number(opts.ctx.userId),
+                        username:opts.ctx.userBankDetails.bankUsername}
                 });
           
                 if(userBankDetails && payload && userBankDetails?.balance>payload.amount)
@@ -196,8 +199,13 @@ export const bankRouter= router({
           }))
           .query(async (opts)=>{
            if(!opts.input.paymentToken) return {}
+           console.log(opts.ctx.userId)
             const userBankDetails = await opts.ctx.db.userBank.findFirst({
-                where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername},
+                where:{bankId:Number(opts.ctx.userBankDetails.bankId),username:opts.ctx.userBankDetails.bankUsername
+                , userId:Number(opts.ctx.userId),
+
+                },
+                
                 select:{
                     balance:true,
                     bank:{

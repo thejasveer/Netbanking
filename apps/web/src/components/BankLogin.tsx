@@ -17,7 +17,7 @@ export function BankLogin({bank,onClick}:{bank:bankType[0]|null;onClick:any}){
  
   const bankLogin = trpc.bank.login.useMutation({
     onSuccess:({loginTokenForBank})=>{
-      console.log("yes")
+      console.log("yes",loginTokenForBank)
         localStorage.setItem('bToken',loginTokenForBank)
         if(paymentToken){
              navigate('/confirm?paymentToken='+paymentToken)
