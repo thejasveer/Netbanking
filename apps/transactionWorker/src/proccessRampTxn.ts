@@ -9,17 +9,17 @@ export const proccessRampTxn= async(token: any)=>{
 
    console.log("-----")
     try {
-         //verify token 
+        
         try {
             const payload  = await new Promise((resolve,reject)=>{
                 if(!SECRET) return;
                     jwt.verify(
                         token,
                         SECRET,
-                        (err:any,payload: any)=>{
+                        (err:any,decoded: any)=>{
                           
-                            if(payload){
-                                resolve(payload)
+                            if(decoded){
+                                resolve(decoded)
                             }else{
                             throw new Error(err)
                           
@@ -28,9 +28,7 @@ export const proccessRampTxn= async(token: any)=>{
                       );
                       
                 });
-                console.log(payload)
-    
-                console.log(token,payload)
+   
         } catch (error:any) {
             throw new  Error(error.message ,token)
         }
@@ -58,8 +56,7 @@ export const proccessRampTxn= async(token: any)=>{
                     }
                 });
                 const {userId,bankId}= transaction.userBank;
-                
-                console.log(transaction.userBank)
+                 
                 if(increment){
                     await db.userBank.update({
                         where:{

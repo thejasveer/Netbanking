@@ -1,0 +1,51 @@
+FROM node:20.12.0-alpine3.19 AS base
+
+FROM base AS builder
+
+RUN apk update && apk add --no-cache libc6-compat
+
+WORKDIR /app
+
+RUN npm install -g turbo
+COPY . .
+RUN turbo prune --scope=transactionWorker --docker
+
+# Add lockfile and package.json's of isolated subworkspace
+FROM base AS installer
+RUN apk update && apk add --no-cache libc6-compat
+WORKDIR /app
+
+# First install the dependencies (as they change less often)
+COPY .gitignore .gitignore
+COPY --from=builder /app/ .
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
+# Verify the presence of copied files
+
+RUN cd packages/db && npx prisma generate   
+
+RUN npm install
+
+# Build the project
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+WORKDIR /app/apps/transactionWorker
+RUN npm run build
+
+FROM base AS runner
+WORKDIR /app
+
+# # Don't run production as root
+# RUN addgroup --system --gid 1001 transactionWorker
+# RUN adduser --system --uid 1001 transactionWorker
+# USER transactionWorker
+
+COPY --from=installer /app .
+
+EXPOSE 3006
+EXPOSE 6379
+
+WORKDIR /app/apps/transactionWorker
+CMD ["npm", "run", "docker:start"]
+
+
