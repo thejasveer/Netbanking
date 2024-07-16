@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "cross-env NODE_ENV=development tsc && vite build",
+    "build": "cross-env NODE_ENV=production tsc && vite build",
     "start": "npx serve -s dist -p 3003",
-    "docker:start":"cross-env NODE_ENV=production npm run build && npm run start",
+     
+    "docker:start": " npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -16,6 +17,7 @@
     "@trpc/client": "^11.0.0-rc.403",
     "@trpc/react-query": "^11.0.0-rc.403",
     "@trpc/server": "^11.0.0-rc.403",
+    "cross-env": "^7.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",

@@ -11,7 +11,7 @@ export const proccessRampTxn= async(token: any)=>{
     try {
         
         try {
-            const payload  = await new Promise((resolve,reject)=>{
+           await new Promise((resolve,reject)=>{
                 if(!SECRET) return;
                     jwt.verify(
                         token,

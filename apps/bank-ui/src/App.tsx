@@ -14,6 +14,7 @@ import { Failed } from './Failed';
  
 
 export function App() {
+  console.log(import.meta.env)
  
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {

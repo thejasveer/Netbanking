@@ -28,23 +28,22 @@ COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 RUN cd packages/db && npx prisma generate 
 
-WORKDIR /app/apps/bank-server
-RUN npm run docker:build
+RUN npm run  build
+
+RUN rm -rf ./**/*/src
 
 FROM base AS runner
 WORKDIR /app
 
-# Don't run production as root
-RUN addgroup --system --gid 1001 bankServer
-RUN adduser --system --uid 1001 bankServer
-USER bankServer
+COPY --from=installer /app  .
 
-COPY --from=installer /app .
 
 
 EXPOSE 3004
 EXPOSE 6379
 
-
 WORKDIR /app/apps/bank-server
-CMD ["npm", "run", "docker:start"]
+
+CMD ["npm", "run", "start"]
+
+

@@ -151,7 +151,7 @@ export const bankRouter= router({
                   if(webhookRes.status <= 300){
                    //put into redis queue 
               
-                    redisClient.lPush(
+                    redisClient.lpush(
                     `TRANSACTIONS_QUEUE`,
                          JSON.stringify( opts.input.token  )
                     )

@@ -47,7 +47,7 @@ services:
     depends_on:
       - bank-server
       - redis
-      # - my-redis
+ 
 
   bank-server:
     container_name: "bank-server"
@@ -70,19 +70,24 @@ services:
       
   
   redis:
-    container_name: redis
-    image: redis:latest
+    image: redis:7.2.4
+    command: ["redis-server", "--appendonly", "no"]
     restart: always
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
+    # environment:
+      # - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - app_network
-    ports:
-      - "6379:6379"
+    ports: 
+      - '6379:6379'
+    logging:
+      driver: none
+    volumes:
+      - cache:/data
 
 networks:
   app_network:
     external: true
     driver: bridge
 volumes:
-  redis-data:
+  cache:
+    driver: local

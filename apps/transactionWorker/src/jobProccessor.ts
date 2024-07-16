@@ -6,9 +6,9 @@ export async function processRampJobs() {
     while (true) {
  
             try {
-                const submission = await jobQueue.brPop("TRANSACTIONS_QUEUE", 0);
+                const submission = await jobQueue.brpop("TRANSACTIONS_QUEUE", 0);
              // @ts-ignore
-                 await proccessRampTxn(JSON.parse(submission.element));
+             await proccessRampTxn(JSON.parse(submission.element));
             } catch (error) {
                 console.error("Error processing OffRamp submission:", error);
                 // Implement your error handling logic here. For example, you might want to push

@@ -17,6 +17,9 @@ export const ConfirmPayment=()=>{
     const [,setfetch]= useState(false)
     const payload =  trpc.bank.getPayloadDetails.useQuery({paymentToken:paymentToken||''})
     const [userId, setUserId] = useState<number|null>(null); // Example user ID
+    console.log(import.meta.env)
+
+    
     const { messages } = useWebSocket(import.meta.env.VITE_WEBSOCKET_WORKER_URL,userId);
     const [websocketLoading,setWebscoketLoading] = useState(false)
     useEffect(() => {

@@ -29,16 +29,13 @@ RUN npm install
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-WORKDIR /app/apps/transactionWorker
+
 RUN npm run build
+
+RUN rm -rf ./**/*/src
 
 FROM base AS runner
 WORKDIR /app
-
-# # Don't run production as root
-# RUN addgroup --system --gid 1001 transactionWorker
-# RUN adduser --system --uid 1001 transactionWorker
-# USER transactionWorker
 
 COPY --from=installer /app .
 
@@ -46,6 +43,7 @@ EXPOSE 3006
 EXPOSE 6379
 
 WORKDIR /app/apps/transactionWorker
-CMD ["npm", "run", "docker:start"]
+
+CMD ["npm", "run", "start"]
 
 

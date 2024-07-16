@@ -37,17 +37,31 @@ export function startWebSocketServer(server: any){
 
     })
  });
+  // Subscribing to the channel the channel
+ sub.subscribe('transactions-status', (err, count) => {
+    if (err) {
+      console.error("Failed to subscribe: %s", err.message);
+    } else {
+      console.log(`Subscribed to ${count} channel(s). Waiting for updates on the 'transactions-status' channel.`);
+    }
+  });
+  
 
-sub.subscribe('transactions-status',(message) => {
-    console.log(`Received message: ${message}`);
-    // Handle the received message
-    const { userId, token, status } = JSON.parse(message);
-    // Do some
-    const client = clients[userId];
-    if (client) {
-        client.send(JSON.stringify({ userId, token, status }));
-    }//thing with parsedMessage, e.g., send it to connected clients via WebSocket
-});
+  // Handle messages from the channel
+  sub.on('message', (channel, message) => {
+    if (channel === 'transactions-status') {
+      console.log(`Received message from ${channel}: ${message}`);
+      try {
+        const { userId, token, status } = JSON.parse(message);
+        const client = clients[userId];
+        if (client) {
+          client.send(JSON.stringify({ userId, token, status }));
+        }
+      } catch (error) {
+        console.error('Error parsing message:', error);
+      }
+    }
+  });
  
 }
  
