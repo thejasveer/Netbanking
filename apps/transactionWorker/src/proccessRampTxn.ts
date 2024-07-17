@@ -21,6 +21,7 @@ export const proccessRampTxn= async(token: any)=>{
                             if(decoded){
                                 resolve(decoded)
                             }else{
+                                console.log("err")
                             throw new Error(err)
                           
                             }
@@ -30,6 +31,8 @@ export const proccessRampTxn= async(token: any)=>{
                 });
    
         } catch (error:any) {
+
+
             throw new  Error(error.message ,token)
         }
    
@@ -98,7 +101,9 @@ export const proccessRampTxn= async(token: any)=>{
               }));
       
         } catch (error: any) {
+        
             throw new  Error(error.message)
+            
         }
 
 

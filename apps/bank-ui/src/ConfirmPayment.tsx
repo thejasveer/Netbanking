@@ -19,8 +19,8 @@ export const ConfirmPayment=()=>{
     const [userId, setUserId] = useState<number|null>(null); // Example user ID
     console.log(import.meta.env)
 
-    
-    const { messages } = useWebSocket(import.meta.env.VITE_WEBSOCKET_WORKER_URL,userId);
+
+    const { messages } = useWebSocket(userId);
     const [websocketLoading,setWebscoketLoading] = useState(false)
     useEffect(() => {
      if(messages && messages.status=='SUCCESS')
@@ -37,7 +37,7 @@ export const ConfirmPayment=()=>{
                 setPaymentToken(token)
                setfetch(true)
               };
-   },[])
+   },[]);
 
      
    

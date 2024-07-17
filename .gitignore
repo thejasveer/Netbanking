@@ -6,10 +6,14 @@ node_modules
 .pnp.js
 
 # Local env files
-.env
-.env.local
-.env.development.local
-.env.test.local
+.env.bankClient.dev
+.env.bankClient
+.env.bankServer
+.env.bankServer.dev
+.env.transactionWorker
+.env.transactionWorker.dev
+.env.bankUi
+.env.bankUi.dev
 .env.production.local
 
 # Testing

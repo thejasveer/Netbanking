@@ -4,10 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "cross-env NODE_ENV=development  vite",
     "build": "cross-env NODE_ENV=production tsc && vite build",
     "start": "npx serve -s dist -p 3003",
-     
     "docker:start": " npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

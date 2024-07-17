@@ -4,9 +4,9 @@ import Redis from "ioredis";
 import dotenv from "dotenv";
 // import { REDIS_URL } from './index';
 if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: "./../../dockerEnv/.env.bankServer.dev" })
+  dotenv.config({ path: "./../../dockerEnv/.env.transactionWorker.dev" })
 } else {
-  dotenv.config({ path: "./../../.env.bankServer.dev" })
+  dotenv.config({ path: "./../../.env.transactionWorker.dev" })
 }
 console.log("redis",process.env.REDIS_URL)
 export const jobQueue =  new  Redis(process.env.REDIS_URL!);

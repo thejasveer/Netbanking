@@ -4,10 +4,8 @@ services:
   bank-ui:
     container_name: "bank-ui"
      
-    build:
-      context: .
-      dockerfile: ./apps/bank-ui/Dockerfile.bankUi
-    # restart: always
+    image: codewithjass/netbanking_app:bank-ui
+    restart: always
     ports:
       - "3003:3003"
     networks:
@@ -19,9 +17,7 @@ services:
   bank-client:
     container_name: "bank-client"
      
-    build:
-      context: .
-      dockerfile: ./apps/bank-client/Dockerfile.bankClient
+    image: codewithjass/netbanking_app:bank-client
     # restart: always
     ports:
       - "3005:3005"
@@ -33,11 +29,8 @@ services:
       - bank-server
   transaction-worker:
     container_name: "transaction-worker"
-    build:
-      context: .
-      dockerfile: ./apps/transactionWorker/Dockerfile.transactionWorker
-    
-    # restart: always
+    image: codewithjass/netbanking_app:transaction-worker
+    restart: always
     ports:
       - "3006:3006"
  
@@ -52,11 +45,8 @@ services:
 
   bank-server:
     container_name: "bank-server"
-     
-    build:
-      context: .
-      dockerfile: ./apps/bank-server/Dockerfile.bankServer
-    # restart: always
+    image: codewithjass/netbanking_app:bank-server
+    restart: always
     ports:
       - "3004:3004"
     
@@ -75,8 +65,7 @@ services:
     image: redis:7.2.4
     command: ["redis-server", "--appendonly", "no"]
     restart: always
-    # environment:
-      # - ALLOW_EMPTY_PASSWORD=yes
+   
     networks:
       - app_network
     ports: 

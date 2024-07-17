@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
-export function useWebSocket(url:string,userId:number|null) {
+export function useWebSocket(userId:number|null) {
+
   const [messages, setMessages] = useState<{ userId:number, token:string, status :string}|null>(null);
   const ws = useRef<WebSocket | null>(null);
   
@@ -9,7 +10,7 @@ export function useWebSocket(url:string,userId:number|null) {
  
     if(userId)  
   {  
-    ws.current = new WebSocket(url);
+    ws.current = new WebSocket(import.meta.env.VITE_WEBSOCKET_WORKER_URL,);
 
     ws.current.onopen = () => {
       console.log('WebSocket connection opened');
@@ -36,7 +37,7 @@ export function useWebSocket(url:string,userId:number|null) {
         ws.current.close();
       }
     };
-  }, [url,userId]);
+  }, [userId]);
 
   const sendMessage = (message:any) => {
  
