@@ -11,7 +11,7 @@ services:
     networks:
       - app_network
     env_file:
-      - ./dockerEnv/.env.bankUi.dev
+      - ./dockerEnv/.env.bankUi
     depends_on:
       - bank-server
   bank-client:
@@ -24,7 +24,7 @@ services:
     networks:
       - app_network
     env_file:
-      - ./dockerEnv/.env.bankClient.dev
+      - ./dockerEnv/.env.bankClient
     depends_on:
       - bank-server
   transaction-worker:
@@ -37,7 +37,7 @@ services:
     networks:
       - app_network
     env_file:
-      - ./dockerEnv/.env.transactionWorker.dev
+      - ./dockerEnv/.env.transactionWorker
     depends_on:
       - bank-server
       - redis
@@ -51,7 +51,7 @@ services:
       - "3004:3004"
     
     env_file:
-      - ./dockerEnv/.env.bankServer.dev
+      - ./dockerEnv/.env.bankServer
   
       
       

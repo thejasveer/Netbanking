@@ -37,12 +37,14 @@ WORKDIR /app
 
 # COPY --from=installer /app .
 
-COPY --from=builder /app/apps/bank-client  /app
+
+COPY --from=installer /app .
 
 
 EXPOSE 3005
 
 
+WORKDIR /app/apps/bank-client
 
 CMD ["npm", "run", "start"]
 
