@@ -30,6 +30,8 @@ RUN npm install
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
+WORKDIR /app/apps/transactionWorker
+RUN npm install
 RUN npm run build
 
 RUN rm -rf ./**/*/src
