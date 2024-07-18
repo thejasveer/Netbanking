@@ -9,7 +9,7 @@
     "start": "npx serve -s dist -p 3003",
     "docker:start": " npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "cross-env NODE_ENV=production  vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.45.0",

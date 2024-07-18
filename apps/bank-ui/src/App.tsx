@@ -14,7 +14,7 @@ import { Failed } from './Failed';
  
 
 export function App() {
-  console.log(import.meta.env)
+   
  
   const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
@@ -23,7 +23,7 @@ export function App() {
       }
     }
   }));
- 
+ console.log(import.meta.env.VITE_TRPC_SERVER_URL)
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
