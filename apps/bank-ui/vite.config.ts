@@ -9,8 +9,8 @@ const envFilePath = process.env.NODE_ENV === 'production'
  
 dotenv.config({ path: envFilePath });
 
-console.log(envFilePath)
-console.log(process.env)
+console.log("e",envFilePath)
+console.log("sever url",process.env.VITE_TRPC_SERVER_URL)
  
 export default defineConfig({
   plugins: [react()],
