@@ -16,38 +16,38 @@ services:
       - ./dockerEnv/.env.bankUi.dev
     depends_on:
       - bank-server
-  bank-client:
-    container_name: "bank-client"
+  # bank-client:
+  #   container_name: "bank-client"
      
-    build:
-      context: .
-      dockerfile: ./apps/bank-client/Dockerfile.bankClient
-    # restart: always
-    ports:
-      - "3005:3005"
-    networks:
-      - app_network
-    env_file:
-      - ./dockerEnv/.env.bankClient.dev
-    depends_on:
-      - bank-server
-  transaction-worker:
-    container_name: "transaction-worker"
-    build:
-      context: .
-      dockerfile: ./apps/transactionWorker/Dockerfile.transactionWorker
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/bank-client/Dockerfile.bankClient
+  #   # restart: always
+  #   ports:
+  #     - "3005:3005"
+  #   networks:
+  #     - app_network
+  #   env_file:
+  #     - ./dockerEnv/.env.bankClient.dev
+  #   depends_on:
+  #     - bank-server
+  # transaction-worker:
+  #   container_name: "transaction-worker"
+  #   build:
+  #     context: .
+  #     dockerfile: ./apps/transactionWorker/Dockerfile.transactionWorker
     
-    # restart: always
-    ports:
-      - "3006:3006"
+  #   # restart: always
+  #   ports:
+  #     - "3006:3006"
  
-    networks:
-      - app_network
-    env_file:
-      - ./dockerEnv/.env.transactionWorker.dev
-    depends_on:
-      - bank-server
-      - redis
+  #   networks:
+  #     - app_network
+  #   env_file:
+  #     - ./dockerEnv/.env.transactionWorker.dev
+  #   depends_on:
+  #     - bank-server
+  #     - redis
  
 
   bank-server:

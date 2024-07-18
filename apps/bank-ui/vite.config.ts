@@ -9,15 +9,10 @@ const envFilePath = process.env.NODE_ENV === 'production'
  
 dotenv.config({ path: envFilePath });
 
-console.log("e",envFilePath)
-console.log("sever url",process.env.VITE_TRPC_SERVER_URL)
+console.log("ss",process.env.VITE_TRPC_SERVER_URL)
  
 export default defineConfig({
   plugins: [react()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, 'src'),
-    },
-  },
+ 
  
 })

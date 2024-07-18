@@ -29,21 +29,27 @@ COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 RUN cd packages/db && npx prisma generate   
 
-RUN npm run build  
 
+WORKDIR /app/apps/bank-ui
+
+RUN npm install
+
+
+RUN npm run build  
 FROM base AS runner
 WORKDIR /app
 
 
 # COPY --from=installer /app .
 
-COPY --from=builder /app/apps/bank-ui  /app
+COPY --from=builder /app/apps/bank-ui  /app/apps/bank-ui
 
 
 
 EXPOSE 3003
 
 
-
+WORKDIR /app/apps/bank-ui
+RUN npm install
 # Command to start the application
-CMD ["npm", "run", "docker:start"]
+CMD ["npm", "run", "start"]

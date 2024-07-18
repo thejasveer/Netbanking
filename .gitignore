@@ -6,15 +6,15 @@ node_modules
 .pnp.js
 
 # Local env files
-.env.bankClient.dev
-.env.bankClient
-.env.bankServer
-.env.bankServer.dev
-.env.transactionWorker
-.env.transactionWorker.dev
-.env.bankUi
-.env.bankUi.dev
-.env.production.local
+# .env.bankClient.dev
+# .env.bankClient
+# .env.bankServer
+# .env.bankServer.dev
+# .env.transactionWorker
+# .env.transactionWorker.dev
+# .env.bankUi
+# .env.bankUi.dev
+# .env.production.local
 
 # Testing
 coverage
