@@ -28,7 +28,7 @@ export function App() {
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: import.meta.env.VITE_TRPC_SERVER_URL,
+          url: "http://bank-server:3004",// import.meta.env.VITE_TRPC_SERVER_URL,
 
           // You can pass any HTTP headers you wish here
 

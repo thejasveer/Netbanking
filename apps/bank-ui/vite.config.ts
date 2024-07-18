@@ -8,6 +8,9 @@ const envFilePath = process.env.NODE_ENV === 'production'
 
  
 dotenv.config({ path: envFilePath });
+
+console.log(envFilePath)
+console.log(process.env)
  
 export default defineConfig({
   plugins: [react()],
