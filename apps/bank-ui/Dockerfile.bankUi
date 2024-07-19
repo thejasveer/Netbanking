@@ -5,15 +5,6 @@ FROM base AS builder
 RUN apk update && apk add --no-cache libc6-compat
 
 WORKDIR /app
-# Accept build arguments
-ARG NODE_ENV
-ARG VITE_TRPC_SERVER_URL
-ARG VITE_WEBSOCKET_WORKER_URL
-
-# Use the build arguments as environment variables
-ENV NODE_ENV=${NODE_ENV}
-ENV VITE_TRPC_SERVER_URL=${VITE_TRPC_SERVER_URL}
-ENV VITE_WEBSOCKET_WORKER_URL=${VITE_WEBSOCKET_WORKER_URL}
 
 RUN npm install -g turbo
 
@@ -36,26 +27,25 @@ RUN npm install
 # Build the project
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-RUN cd packages/db && npx prisma generate   
+# RUN cd packages/db && npx prisma generate   
 
+
+WORKDIR /app/apps/bank-ui
 
 RUN npm install
-
-
 RUN npm run build  
+
 FROM base AS runner
 WORKDIR /app
 
 
 # COPY --from=installer /app .
 
-COPY --from=builder /app/apps/bank-ui   /app/apps/bank-ui 
-COPY --from=builder /app/apps/bank-ui/dist  /app/apps/bank-ui/dist
+COPY --from=builder /app/apps/bank-ui  /app/apps/bank-ui
 
 
 
 EXPOSE 3003
-EXPOSE 5173
 
 
 WORKDIR /app/apps/bank-ui
