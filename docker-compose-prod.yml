@@ -2,19 +2,16 @@ version: "3.8"
 
 services:
   bank-ui:
-    container_name: "bank-ui"
-    build:
-    context: .
-    dockerfile: ./apps/bank-ui/Dockerfile.bankUi
+   
     
-    # image: "codewithjass/netbanking_app:bank-ui"
+    image: "codewithjass/netbanking_app:bank-ui"
     restart: always
     ports:
       - "3003:3003"
     networks:
       - app_network
-    env_file:
-      - ./dockerEnv/.env.bankUi
+    # env_file:
+    #   - ./dockerEnv/.env.bankUi
     depends_on:
       - bank-server
   bank-client:

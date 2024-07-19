@@ -3,7 +3,7 @@ version: "3.8"
 services:
   bank-ui:
     container_name: "bank-ui"
-    platforms: linux/amd64,linux/arm64
+    
     build:
       context: .
       dockerfile: ./apps/bank-ui/Dockerfile.bankUi
