@@ -25,6 +25,10 @@ jobs:
           file: ./apps/bank-ui/Dockerfile.bankUi
           push: true
           tags: codewithjass/netbanking_app:bank-ui
+          build-args: |
+            NODE_ENV=${{vars.NODE_ENV}}
+            VITE_TRPC_SERVER_URL=${{vars.VITE_TRPC_SERVER_URL}}
+            VITE_WEBSOCKET_WORKER_URL=${{vars.VITE_WEBSOCKET_WORKER_URL}}
       # - name: Build and Push Transaction-Worker Docker image
       #   uses: docker/build-push-action@v2
       #   with:

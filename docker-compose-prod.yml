@@ -3,8 +3,11 @@ version: "3.8"
 services:
   bank-ui:
     container_name: "bank-ui"
-     
-    image: codewithjass/netbanking_app:bank-ui
+    build:
+    context: .
+    dockerfile: ./apps/bank-ui/Dockerfile.bankUi
+    
+    # image: "codewithjass/netbanking_app:bank-ui"
     restart: always
     ports:
       - "3003:3003"
@@ -18,6 +21,7 @@ services:
     container_name: "bank-client"
      
     image: codewithjass/netbanking_app:bank-client
+
     # restart: always
     ports:
       - "3005:3005"
