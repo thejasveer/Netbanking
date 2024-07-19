@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production  npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
-    "start": "cross-env NODE_ENV=production node dist/index.js",
-    "docker:start": "cross-env NODE_ENV=production node dist/index.js",
-    "docker:build": "cross-env NODE_ENV=production npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "start": "node dist/index.js",
+    "docker:start": "node dist/index.js",
+    "docker:build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "watch": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --watch",
     "dev": "npm run watch && npm run start"
   },
