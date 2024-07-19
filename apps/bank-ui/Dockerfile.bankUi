@@ -51,6 +51,7 @@ WORKDIR /app
 
 # COPY --from=installer /app .
 
+COPY --from=builder /app/apps/bank-ui   /app/apps/bank-ui 
 COPY --from=builder /app/apps/bank-ui/dist  /app/apps/bank-ui/dist
 
 
