@@ -30,9 +30,9 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/dotenv/package.json
+// ../../node_modules/dotenv/package.json
 var require_package = __commonJS({
-  "node_modules/dotenv/package.json"(exports2, module2) {
+  "../../node_modules/dotenv/package.json"(exports2, module2) {
     module2.exports = {
       name: "dotenv",
       version: "16.4.5",
@@ -101,9 +101,9 @@ var require_package = __commonJS({
   }
 });
 
-// node_modules/dotenv/lib/main.js
+// ../../node_modules/dotenv/lib/main.js
 var require_main = __commonJS({
-  "node_modules/dotenv/lib/main.js"(exports2, module2) {
+  "../../node_modules/dotenv/lib/main.js"(exports2, module2) {
     var fs2 = require("fs");
     var path = require("path");
     var os2 = require("os");
@@ -47939,11 +47939,7 @@ var import_websocket_server = __toESM(require_websocket_server(), 1);
 // src/utils/redisClient.ts
 var import_ioredis = __toESM(require_built3());
 var import_dotenv = __toESM(require_main());
-if (process.env.NODE_ENV === "production") {
-  import_dotenv.default.config({ path: "./../../dockerEnv/.env.transactionWorker.dev" });
-} else {
-  import_dotenv.default.config({ path: "./../../.env.transactionWorker.dev" });
-}
+import_dotenv.default.config({ path: "./../../.env " });
 console.log("redis", process.env.REDIS_URL);
 var jobQueue = new import_ioredis.default(process.env.REDIS_URL);
 var pub = new import_ioredis.default(process.env.REDIS_URL);
@@ -51409,13 +51405,7 @@ async function processRampJobs() {
 // src/index.ts
 var import_express = __toESM(require_express2());
 var import_cors = __toESM(require_lib4());
-if (process.env.NODE_ENV === "production") {
-  console.log("yes");
-  import_dotenv2.default.config({ path: "./../../dockerEnv/.env.transactionWorker.dev" });
-} else {
-  console.log("local");
-  import_dotenv2.default.config({ path: "./../../.env.transactionWorker.dev" });
-}
+import_dotenv2.default.config({ path: "./../../.env " });
 var SECRET = process.env.JWT_SECRET;
 var WEBSOCKET_SERVER_PORT = process.env.WEBSOCKET_SERVER_PORT;
 var REDIS_URL = process.env.REDIS_URL;

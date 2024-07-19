@@ -6,14 +6,7 @@ import { processRampJobs  } from "./jobProccessor";
 import express from 'express'
 import cors from 'cors'
  
-if (process.env.NODE_ENV === 'production') {
-console.log("yes")
-    dotenv.config({ path: "./../../dockerEnv/.env.transactionWorker.dev" })
-  } else {
-    console.log("local")
-    dotenv.config({ path: "./../../.env.transactionWorker.dev" })
-  }
-
+dotenv.config({ path: "./../../.env " })
 export const SECRET = process.env.JWT_SECRET;
 export const WEBSOCKET_SERVER_PORT = process.env.WEBSOCKET_SERVER_PORT!;
 export const REDIS_URL = process.env.REDIS_URL!

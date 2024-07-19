@@ -23,12 +23,13 @@ export function App() {
       }
     }
   }));
- console.log(import.meta.env.VITE_TRPC_SERVER_URL)
+ console.log("vite",import.meta.env.VITE_TRPC_SERVER_URL)
+ 
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
         httpBatchLink({
-          url: "http://bank-server:3004",// import.meta.env.VITE_TRPC_SERVER_URL,
+          url:import.meta.env.VITE_TRPC_SERVER_URL,
 
           // You can pass any HTTP headers you wish here
 

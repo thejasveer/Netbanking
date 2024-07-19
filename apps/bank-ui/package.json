@@ -4,19 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development  vite",
-    "build": "cross-env NODE_ENV=production tsc && vite build",
+    "dev": "vite",
+    "build": "tsc && vite build",
     "start": "npx serve -s dist -p 3003",
     "docker:start": " npm run start",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "cross-env NODE_ENV=production  vite preview"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.45.0",
     "@trpc/client": "^11.0.0-rc.403",
     "@trpc/react-query": "^11.0.0-rc.403",
     "@trpc/server": "^11.0.0-rc.403",
-    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
@@ -30,7 +30,7 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.19",
-    "dotenv": "^16.4.5",
+
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",

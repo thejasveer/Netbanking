@@ -10,8 +10,8 @@ services:
       - "3003:3003"
     networks:
       - app_network
-    # env_file:
-    #   - ./dockerEnv/.env.bankUi
+    env_file:
+      - ./.env.prod
     depends_on:
       - bank-server
   bank-client:
@@ -25,7 +25,7 @@ services:
     networks:
       - app_network
     env_file:
-      - ./dockerEnv/.env.bankClient
+       - ./.env.prod
     depends_on:
       - bank-server
   transaction-worker:
@@ -38,12 +38,10 @@ services:
     networks:
       - app_network
     env_file:
-      - ./dockerEnv/.env.transactionWorker
+      - ./.env.prod
     depends_on:
       - bank-server
       - redis
- 
-
   bank-server:
     container_name: "bank-server"
     image: codewithjass/netbanking_app:bank-server
@@ -52,7 +50,7 @@ services:
       - "3004:3004"
     
     env_file:
-      - ./dockerEnv/.env.bankServer
+      - ./.env.prod
   
       
       
@@ -60,8 +58,6 @@ services:
       - redis
     networks:
       - app_network
-      
-  
   redis:
     image: redis:7.2.4
     command: ["redis-server", "--appendonly", "no"]

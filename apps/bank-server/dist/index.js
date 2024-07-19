@@ -31098,9 +31098,9 @@ var require_built3 = __commonJS({
   }
 });
 
-// node_modules/dotenv/package.json
+// ../../node_modules/dotenv/package.json
 var require_package = __commonJS({
-  "node_modules/dotenv/package.json"(exports2, module2) {
+  "../../node_modules/dotenv/package.json"(exports2, module2) {
     module2.exports = {
       name: "dotenv",
       version: "16.4.5",
@@ -31169,9 +31169,9 @@ var require_package = __commonJS({
   }
 });
 
-// node_modules/dotenv/lib/main.js
+// ../../node_modules/dotenv/lib/main.js
 var require_main = __commonJS({
-  "node_modules/dotenv/lib/main.js"(exports2, module2) {
+  "../../node_modules/dotenv/lib/main.js"(exports2, module2) {
     var fs2 = require("fs");
     var path = require("path");
     var os2 = require("os");
@@ -39694,11 +39694,7 @@ var import_client = __toESM(require_default2());
 // src/redis.ts
 var import_ioredis = __toESM(require_built3());
 var import_dotenv = __toESM(require_main());
-if (process.env.NODE_ENV === "production") {
-  import_dotenv.default.config({ path: "./../../dockerEnv/.env.bankServer.dev" });
-} else {
-  import_dotenv.default.config({ path: "./../../.env.bankServer.dev" });
-}
+import_dotenv.default.config({ path: "./../../.env " });
 console.log("redis", process.env.REDIS_URL);
 var redisClient = new import_ioredis.default(process.env.REDIS_URL || "");
 redisClient.on("error", (err) => {
@@ -41110,11 +41106,7 @@ var appRouter = router({
   user: userRouter,
   bank: bankRouter
 });
-if (process.env.NODE_ENV === "production") {
-  import_dotenv2.default.config({ path: "./../../dockerEnv/.env.bankServer.dev" });
-} else {
-  import_dotenv2.default.config({ path: "./../../.env.bankServer.dev" });
-}
+import_dotenv2.default.config({ path: "./../../.env " });
 var SECRET = process.env.JWT_SECRET || "secret";
 var WEBHOOK_URL = process.env.WEBHOOK_URL;
 var PORT = process.env.PORT;

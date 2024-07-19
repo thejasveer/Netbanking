@@ -2,20 +2,14 @@ import express from 'express';
 import { getLoginToken } from './utils/trpc';
 import cors from 'cors'
 import dotenv from 'dotenv'
-
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path:"./../../dockerEnv/.env.bankClient.dev" })
-  console.log("yes")
-} else {
-  console.log("no")
-  dotenv.config({ path:"./../../.env.bankClient.dev" })
-}
+ 
+dotenv.config({ path:"./../../.env" })
+ 
  
 const app = express();
 
 const TRPC_CLIENT_PORT=process.env.TRPC_CLIENT_PORT!
  
-
 app.use(cors())
 app.use(express.json());
 app.post('/', async (req, res) => {

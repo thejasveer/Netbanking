@@ -10,11 +10,9 @@ const appRouter = router({
   user:userRouter,
   bank:bankRouter
 });
-if (process.env.NODE_ENV === 'production') {
-    dotenv.config({ path: "./../../dockerEnv/.env.bankServer.dev" })
-  } else {
-    dotenv.config({ path: "./../../.env.bankServer.dev" })
-  }
+ 
+dotenv.config({ path: "./../../.env " })
+ 
 
 export const SECRET =  process.env.JWT_SECRET||'secret'
 export const WEBHOOK_URL =  process.env.WEBHOOK_URL!

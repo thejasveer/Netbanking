@@ -23495,9 +23495,9 @@ var require_express2 = __commonJS({
   }
 });
 
-// node_modules/dotenv/package.json
+// ../../node_modules/dotenv/package.json
 var require_package = __commonJS({
-  "node_modules/dotenv/package.json"(exports2, module2) {
+  "../../node_modules/dotenv/package.json"(exports2, module2) {
     module2.exports = {
       name: "dotenv",
       version: "16.4.5",
@@ -23566,9 +23566,9 @@ var require_package = __commonJS({
   }
 });
 
-// node_modules/dotenv/lib/main.js
+// ../../node_modules/dotenv/lib/main.js
 var require_main = __commonJS({
-  "node_modules/dotenv/lib/main.js"(exports2, module2) {
+  "../../node_modules/dotenv/lib/main.js"(exports2, module2) {
     var fs = require("fs");
     var path = require("path");
     var os = require("os");
@@ -25590,15 +25590,10 @@ async function getLoginToken(username, password) {
 // src/index.ts
 var import_cors = __toESM(require_lib3());
 var import_dotenv2 = __toESM(require_main());
-if (process.env.NODE_ENV === "production") {
-  import_dotenv2.default.config({ path: "./../../dockerEnv/.env.bankClient.dev" });
-  console.log("yes");
-} else {
-  console.log("no");
-  import_dotenv2.default.config({ path: "./../../.env.bankClient.dev" });
-}
+import_dotenv2.default.config({ path: "./../../.env" });
 var app = (0, import_express.default)();
 var TRPC_CLIENT_PORT = process.env.TRPC_CLIENT_PORT;
+console.log(TRPC_CLIENT_PORT);
 app.use((0, import_cors.default)());
 app.use(import_express.default.json());
 app.post("/", async (req, res) => {
