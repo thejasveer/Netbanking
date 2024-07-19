@@ -39,8 +39,6 @@ COPY turbo.json turbo.json
 RUN cd packages/db && npx prisma generate   
 
 
-WORKDIR /app/apps/bank-ui
-
 RUN npm install
 
 
