@@ -38,7 +38,7 @@ RUN cd packages/db && DATABASE_URL=$DATABASE_URL npx prisma generate
 
 
 
-# WORKDIR /app/apps/bank-ui
+WORKDIR /app/apps/bank-ui
 
 RUN npm install
 RUN npm run build  
@@ -49,10 +49,7 @@ WORKDIR /app
 
 # COPY --from=installer /app .
 
-COPY --from=builder /app/apps/bank-ui  /app/apps/bank-ui
-
-
-
+COPY --from=builder /app  .
 EXPOSE 3003
 
 
