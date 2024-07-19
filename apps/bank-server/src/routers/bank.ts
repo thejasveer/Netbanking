@@ -27,7 +27,7 @@ export const bankRouter= router({
     .query(async (opts)=>{
         let banks = await opts.ctx.db.banks.findMany();
    
-        return banks.map((x)=>({
+        return banks.map((x:any)=>({
             id:x.bankId,
             bankName: x.name,
             placeholder: x.usernamePlaceholder,

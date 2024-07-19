@@ -25593,7 +25593,6 @@ var import_dotenv2 = __toESM(require_main());
 import_dotenv2.default.config({ path: "./../../.env" });
 var app = (0, import_express.default)();
 var TRPC_CLIENT_PORT = process.env.TRPC_CLIENT_PORT;
-console.log(TRPC_CLIENT_PORT);
 app.use((0, import_cors.default)());
 app.use(import_express.default.json());
 app.post("/", async (req, res) => {
