@@ -17,7 +17,7 @@ jobs:
         run: |
           npm install
           cd ./packages/db && DATABASE_URL=${{secrets.DATABASE_URL}} npx prisma generate && cd ../..
-          npm run build
+          VITE_TRPC_SERVER_URL=${{vars.VITE_TRPC_SERVER_URL}} VITE_WEBSOCKET_WORKER_URL=${{vars.VITE_WEBSOCKET_WORKER_URL}} DATABASE_URL=${{secrets.DATABASE_URL}} npm run build
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
