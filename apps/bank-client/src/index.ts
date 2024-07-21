@@ -15,7 +15,6 @@ app.use(express.json());
 app.post('/', async (req, res) => {
   try {
       const {username,password} = req.body
- 
       const token= await getLoginToken(username,password) ;
       res.status(200).json({ token:token });
   } catch (error) {

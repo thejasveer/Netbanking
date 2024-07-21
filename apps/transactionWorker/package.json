@@ -9,7 +9,7 @@
     "docker:start": "node dist/index.js",
     "docker:build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "watch": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js --watch",
-    "dev": "npm run watch && npm run start"
+    "dev": "npm run start"
   },
   "keywords": [],
   "author": "",
