@@ -45,8 +45,8 @@ export const ConfirmPayment = () => {
       // window.close();
     },
     onError: (data) => {
-      if (data.message == "Insufficient funds.") {
-        navigate("/failed");
+      if (data.message) {
+        navigate("/failed?msg=" + data.message);
       }
     },
   });

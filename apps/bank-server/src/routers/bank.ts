@@ -118,14 +118,21 @@ export const bankRouter= router({
                         username:opts.ctx.userBankDetails.bankUsername}
                 });
           
-                if(userBankDetails && payload && userBankDetails?.balance>payload.amount)
+                if(  userBankDetails && payload  )
                 {
- 
-               // const type =  payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp;
+                    if( payload.type == 'ON_RAMP' && userBankDetails?.balance<payload.amount){
+                        await axios.post(WEBHOOK_URL , {
+                            token: opts.input.token,
+                            status: PaymentStatus.FAILED,
+                            });
+                        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });
+                    } 
+    
+                  // const type =  payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp;
                
-                await opts.ctx.db.transaction.upsert({where:{
+                 await opts.ctx.db.transaction.upsert({where:{
                     token:  opts.input.token
-                },update:{
+                 },update:{
                         token:opts.input.token, 
                         amount:payload.amount,
                         status:PaymentStatus.INITIATED,
@@ -141,7 +148,7 @@ export const bankRouter= router({
                     bankId:Number(opts.ctx.userBankDetails.bankId),
                     type: payload.type == 'OFF_RAMP'?TransactionType.OnRamp:TransactionType.OffRamp 
                  }
-                });
+                 });
                     //informing webhook server an d updating the transaction  
                  
                  const webhookRes = await axios.post(WEBHOOK_URL , {
@@ -170,7 +177,7 @@ export const bankRouter= router({
               
 
 
-                    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Insufficient funds.' });
+                    throw new TRPCError({ code: 'BAD_REQUEST', message: 'Something went wrong.' });
                 }
              
                 return {
