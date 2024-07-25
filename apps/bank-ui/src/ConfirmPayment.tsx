@@ -72,38 +72,40 @@ export const ConfirmPayment = () => {
   }
 
   return (
-    <div className="p-14 flex flex-col gap-4">
-      <Back fn={() => handleback()} />
-      <Row
-        keyStr={payload.data?.toFrom}
-        value={{
-          heading: `Checking Acc (${payload.data?.bankName})`,
-          value: "$" + Math.floor(payload.data?.balance || 0).toFixed(2),
-        }}
-      />
-      <Row
-        keyStr={"Amount"}
-        value={{
-          heading: "$" + Math.floor(payload.data?.amount || 0).toFixed(2),
-          value: "",
-        }}
-      />
-      <Row
-        keyStr={"DATE"}
-        value={{ heading: new Date().toDateString(), value: "" }}
-      />
-      <div className="mt-24 flex flex-col items-center">
-        <p className="text-center">
-          By clicking "Confirm" you authorize this payment{" "}
-        </p>
-
-        <Button
-          action={confirmPayment}
-          loading={bankAction.isPending || websocketLoading}
-          text={"Confirm"}
+    <Center>
+      <div className="p-14 flex flex-col  gap-4">
+        <Back fn={() => handleback()} />
+        <Row
+          keyStr={payload.data?.toFrom}
+          value={{
+            heading: `Checking Acc (${payload.data?.bankName})`,
+            value: "$" + Math.floor(payload.data?.balance || 0).toFixed(2),
+          }}
         />
-        {bankAction.isError && <Error msg={bankAction.error.message} />}
+        <Row
+          keyStr={"Amount"}
+          value={{
+            heading: "$" + Math.floor(payload.data?.amount || 0).toFixed(2),
+            value: "",
+          }}
+        />
+        <Row
+          keyStr={"DATE"}
+          value={{ heading: new Date().toDateString(), value: "" }}
+        />
+        <div className="mt-24 flex flex-col items-center">
+          <p className="text-center">
+            By clicking "Confirm" you authorize this payment{" "}
+          </p>
+
+          <Button
+            action={confirmPayment}
+            loading={bankAction.isPending || websocketLoading}
+            text={"Confirm"}
+          />
+          {bankAction.isError && <Error msg={bankAction.error.message} />}
+        </div>
       </div>
-    </div>
+    </Center>
   );
 };
