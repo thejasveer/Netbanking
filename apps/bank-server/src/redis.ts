@@ -3,7 +3,7 @@ import Redis from 'ioredis';
 import dotenv from "dotenv";
 // import { REDIS_URL } from './index';
 dotenv.config({ path: "./../../.env " })
-console.log("redis",process.env.REDIS_URL)
+ 
 const redisClient = new Redis(process.env.REDIS_URL || "");
 
 redisClient.on('error', (err) => {

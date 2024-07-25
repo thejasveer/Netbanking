@@ -92,7 +92,7 @@ export const ConfirmPayment = () => {
         keyStr={"DATE"}
         value={{ heading: new Date().toDateString(), value: "" }}
       />
-      <div className="mt-24">
+      <div className="mt-24 flex flex-col items-center">
         <p className="text-center">
           By clicking "Confirm" you authorize this payment{" "}
         </p>

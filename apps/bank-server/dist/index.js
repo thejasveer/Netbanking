@@ -39695,7 +39695,6 @@ var import_client = __toESM(require_default2());
 var import_ioredis = __toESM(require_built3());
 var import_dotenv = __toESM(require_main());
 import_dotenv.default.config({ path: "./../../.env " });
-console.log("redis", process.env.REDIS_URL);
 var redisClient = new import_ioredis.default(process.env.REDIS_URL || "");
 redisClient.on("error", (err) => {
   console.error("Redis Client Error", err);
@@ -39790,7 +39789,14 @@ var bankRouter = router({
           username: opts.ctx.userBankDetails.bankUsername
         }
       });
-      if (userBankDetails && payload && userBankDetails?.balance > payload.amount) {
+      if (userBankDetails && payload) {
+        if (payload.type == "ON_RAMP" && userBankDetails?.balance < payload.amount) {
+          await axios_default.post(WEBHOOK_URL, {
+            token: opts.input.token,
+            status: import_client.PaymentStatus.FAILED
+          });
+          throw new TRPCError({ code: "BAD_REQUEST", message: "Insufficient funds." });
+        }
         await opts.ctx.db.transaction.upsert({
           where: {
             token: opts.input.token
@@ -39817,7 +39823,6 @@ var bankRouter = router({
           status: import_client.PaymentStatus.INITIATED
         });
         if (webhookRes.status <= 300) {
-          console.log(JSON.stringify(opts.input.token));
           redis_default.lpush(
             `TRANSACTIONS_QUEUE`,
             JSON.stringify(opts.input.token)
@@ -39830,7 +39835,7 @@ var bankRouter = router({
           token: opts.input.token,
           status: import_client.PaymentStatus.FAILED
         });
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Insufficient funds." });
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Something went wrong." });
       }
       return {
         success: true,
