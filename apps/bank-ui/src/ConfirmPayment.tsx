@@ -22,7 +22,11 @@ export const ConfirmPayment = () => {
   const { messages } = useWebSocket(userId);
   const [websocketLoading, setWebscoketLoading] = useState(false);
   useEffect(() => {
-    if (messages && messages.status == "SUCCESS") {
+    if (
+      messages &&
+      messages.status == "SUCCESS" &&
+      messages.token == paymentToken
+    ) {
       navigate("/success");
     }
   }, [messages]);
